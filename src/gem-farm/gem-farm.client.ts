@@ -248,10 +248,10 @@ export class GemFarmClient extends GemBankClient {
       .accounts({
         farm: farm.publicKey,
         farmManager: isKp(farmManager)
-          ? (<Keypair>farmManager).publicKey
-          : farmManager,
+          ? (<Keypair>farmManager).publicKey as PublicKey
+          : farmManager as PublicKey,
         farmAuthority: farmAuth,
-        payer: isKp(payer) ? (<Keypair>payer).publicKey : farmManager,
+        payer: isKp(payer) ? (<Keypair>payer).publicKey as PublicKey : farmManager as PublicKey,
         feeAcc: feeAccount,
         rewardAPot,
         rewardAMint,
@@ -295,8 +295,8 @@ export class GemFarmClient extends GemBankClient {
       .accounts({
         farm,
         farmManager: isKp(farmManager)
-          ? (<Keypair>farmManager).publicKey
-          : farmManager,
+          ? (<Keypair>farmManager).publicKey as PublicKey
+          : farmManager as PublicKey,
       })
       .signers(signers)
       .rpc();
@@ -322,8 +322,8 @@ export class GemFarmClient extends GemBankClient {
       .accounts({
         farm,
         farmManager: isKp(farmManager)
-          ? (<Keypair>farmManager).publicKey
-          : farmManager,
+          ? (<Keypair>farmManager).publicKey as PublicKey
+          : farmManager as PublicKey,
         farmAuthority: farmAuth,
         farmTreasury,
         destination,
@@ -364,8 +364,8 @@ export class GemFarmClient extends GemBankClient {
       .accounts({
         farm,
         farmManager: isKp(farmManager)
-          ? (<Keypair>farmManager).publicKey
-          : farmManager,
+          ? (<Keypair>farmManager).publicKey as PublicKey
+          : farmManager as PublicKey,
         farmAuthority: farmAuth,
         bank: farmAcc.bank,
         addressToWhitelist,
@@ -407,8 +407,8 @@ export class GemFarmClient extends GemBankClient {
       .accounts({
         farm,
         farmManager: isKp(farmManager)
-          ? (<Keypair>farmManager).publicKey
-          : farmManager,
+          ? (<Keypair>farmManager).publicKey as PublicKey
+          : farmManager as PublicKey,
         farmAuthority: farmAuth,
         bank: farmAcc.bank,
         addressToRemove,
@@ -463,8 +463,8 @@ export class GemFarmClient extends GemBankClient {
     payer: PublicKey | Keypair
   ) {
     const identityPk = isKp(farmerIdentity)
-      ? (<Keypair>farmerIdentity).publicKey
-      : <PublicKey>farmerIdentity;
+      ? (<Keypair>farmerIdentity).publicKey as PublicKey
+      : <PublicKey>farmerIdentity as PublicKey;
 
     const farmAcc = await this.fetchFarmAcc(farm);
 
@@ -483,7 +483,7 @@ export class GemFarmClient extends GemBankClient {
         farm,
         farmer,
         identity: identityPk,
-        payer: isKp(payer) ? (<Keypair>payer).publicKey : payer,
+        payer: isKp(payer) ? (<Keypair>payer).publicKey as PublicKey : payer as PublicKey,
         feeAcc: feeAccount,
         bank: farmAcc.bank,
         vault,
@@ -543,8 +543,8 @@ export class GemFarmClient extends GemBankClient {
     skipRewards = false
   ) {
     const identityPk = isKp(farmerIdentity)
-      ? (<Keypair>farmerIdentity).publicKey
-      : <PublicKey>farmerIdentity;
+      ? (<Keypair>farmerIdentity).publicKey as PublicKey
+      : <PublicKey>farmerIdentity as PublicKey;
 
     const farmAcc = await this.fetchFarmAcc(farm);
 
@@ -619,8 +619,8 @@ export class GemFarmClient extends GemBankClient {
     rewardBMint: PublicKey
   ) {
     const identityPk = isKp(farmerIdentity)
-      ? (<Keypair>farmerIdentity).publicKey
-      : <PublicKey>farmerIdentity;
+      ? (<Keypair>farmerIdentity).publicKey as PublicKey
+      : <PublicKey>farmerIdentity as PublicKey;
 
     const [farmAuth, farmAuthBump] = await findFarmAuthorityPDA(farm);
     const [farmer, farmerBump] = await findFarmerPDA(farm, identityPk);
@@ -681,8 +681,8 @@ export class GemFarmClient extends GemBankClient {
     creatorProof?: PublicKey
   ) {
     const identityPk = isKp(farmerIdentity)
-      ? (<Keypair>farmerIdentity).publicKey
-      : <PublicKey>farmerIdentity;
+      ? (<Keypair>farmerIdentity).publicKey as PublicKey
+      : <PublicKey>farmerIdentity as PublicKey;
 
     const farmAcc = await this.fetchFarmAcc(farm);
 
@@ -790,8 +790,8 @@ export class GemFarmClient extends GemBankClient {
     reenroll?: boolean
   ) {
     const identityPk = isKp(farmerIdentity)
-      ? (<Keypair>farmerIdentity).publicKey
-      : <PublicKey>farmerIdentity;
+      ? (<Keypair>farmerIdentity).publicKey as PublicKey
+      : <PublicKey>farmerIdentity as PublicKey;
 
     const [farmer, farmerBump] = await findFarmerPDA(farm, identityPk);
 
@@ -851,8 +851,8 @@ export class GemFarmClient extends GemBankClient {
         .accounts({
           farm,
           farmManager: isKp(farmManager)
-            ? (<Keypair>farmManager).publicKey
-            : farmManager,
+            ? (<Keypair>farmManager).publicKey as PublicKey
+            : farmManager as PublicKey,
           funderToDeauthorize: funder,
           authorizationProof,
           systemProgram: SystemProgram.programId,
@@ -866,8 +866,8 @@ export class GemFarmClient extends GemBankClient {
         .accounts({
           farm,
           farmManager: isKp(farmManager)
-            ? (<Keypair>farmManager).publicKey
-            : farmManager,
+            ? (<Keypair>farmManager).publicKey as PublicKey
+            : farmManager as PublicKey,
           funderToAuthorize: funder,
           authorizationProof,
           systemProgram: SystemProgram.programId,
@@ -906,8 +906,8 @@ export class GemFarmClient extends GemBankClient {
     fixedRateConfig: FixedRateConfig | null = null
   ) {
     const funderPk = isKp(funder)
-      ? (<Keypair>funder).publicKey
-      : <PublicKey>funder;
+      ? (<Keypair>funder).publicKey as PublicKey
+      : <PublicKey>funder as PublicKey;
 
     const [farmAuth, farmAuthBump] = await findFarmAuthorityPDA(farm);
     const [authorizationProof, authorizationProofBump] =
@@ -967,8 +967,8 @@ export class GemFarmClient extends GemBankClient {
       .accounts({
         farm,
         farmManager: isKp(farmManager)
-          ? (<Keypair>farmManager).publicKey
-          : farmManager,
+          ? (<Keypair>farmManager).publicKey as PublicKey
+          : farmManager as PublicKey,
         farmAuthority: farmAuth,
         rewardPot: pot,
         rewardDestination,
@@ -1005,8 +1005,8 @@ export class GemFarmClient extends GemBankClient {
       .accounts({
         farm,
         farmManager: isKp(farmManager)
-          ? (<Keypair>farmManager).publicKey
-          : farmManager,
+          ? (<Keypair>farmManager).publicKey as PublicKey
+          : farmManager as PublicKey,
         rewardMint,
       })
       .signers(signers)
@@ -1056,8 +1056,8 @@ export class GemFarmClient extends GemBankClient {
       .accounts({
         farm,
         farmManager: isKp(farmManager)
-          ? (<Keypair>farmManager).publicKey
-          : farmManager,
+          ? (<Keypair>farmManager).publicKey as PublicKey
+          : farmManager as PublicKey,
         farmAuthority: farmAuth,
         bank,
         gemBank: this.bankProgram.programId,
