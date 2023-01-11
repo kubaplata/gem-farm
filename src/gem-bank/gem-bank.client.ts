@@ -183,8 +183,8 @@ export class GemBankClient extends AccountUtils {
       .accounts({
         bank: bank.publicKey,
         bankManager: isKp(bankManager)
-          ? (<Keypair>bankManager).publicKey
-          : bankManager,
+          ? ((<Keypair>bankManager).publicKey as PublicKey)
+          : (bankManager as PublicKey),
         payer: isKp(payer) ? (<Keypair>payer).publicKey : payer,
         systemProgram: SystemProgram.programId,
       })
