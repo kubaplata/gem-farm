@@ -208,8 +208,8 @@ export class GemBankClient extends AccountUtils {
       .accounts({
         bank,
         bankManager: isKp(bankManager)
-          ? (<Keypair>bankManager).publicKey
-          : bankManager,
+          ? (<Keypair>bankManager).publicKey as PublicKey
+          : bankManager as PublicKey,
       })
       .signers(signers)
       .rpc();
@@ -225,8 +225,8 @@ export class GemBankClient extends AccountUtils {
     name: string
   ) {
     const creatorPk = isKp(creator)
-      ? (<Keypair>creator).publicKey
-      : <PublicKey>creator;
+      ? (<Keypair>creator).publicKey as PublicKey
+      : <PublicKey>creator as PublicKey;
 
     const [vault, vaultBump] = await findVaultPDA(bank, creatorPk);
     const [vaultAuth, vaultAuthBump] = await findVaultAuthorityPDA(vault); //nice-to-have
@@ -242,7 +242,7 @@ export class GemBankClient extends AccountUtils {
         bank,
         vault,
         creator: creatorPk,
-        payer: isKp(payer) ? (<Keypair>payer).publicKey : <PublicKey>payer,
+        payer: isKp(payer) ? (<Keypair>payer).publicKey as PublicKey : <PublicKey>payer as PublicKey,
         systemProgram: SystemProgram.programId,
       })
       .signers(signers)
@@ -267,8 +267,8 @@ export class GemBankClient extends AccountUtils {
         bank,
         vault,
         owner: isKp(existingOwner)
-          ? (<Keypair>existingOwner).publicKey
-          : existingOwner,
+          ? (<Keypair>existingOwner).publicKey as PublicKey
+          : existingOwner as PublicKey,
       })
       .signers(signers)
       .rpc();
@@ -292,8 +292,8 @@ export class GemBankClient extends AccountUtils {
         bank,
         vault,
         bankManager: isKp(bankManager)
-          ? (<Keypair>bankManager).publicKey
-          : bankManager,
+          ? (<Keypair>bankManager).publicKey as PublicKey
+          : bankManager as PublicKey,
       })
       .signers(signers)
       .rpc();
@@ -315,8 +315,8 @@ export class GemBankClient extends AccountUtils {
       .accounts({
         bank,
         bankManager: bankManager
-          ? (<Keypair>bankManager).publicKey
-          : bankManager,
+          ? (<Keypair>bankManager).publicKey as PublicKey
+          : bankManager as PublicKey,
       })
       .signers(signers)
       .rpc();
@@ -419,7 +419,7 @@ export class GemBankClient extends AccountUtils {
       .accounts({
         bank,
         vault,
-        owner: isKp(vaultOwner) ? (<Keypair>vaultOwner).publicKey : vaultOwner,
+        owner: isKp(vaultOwner) ? (<Keypair>vaultOwner).publicKey as PublicKey : vaultOwner as PublicKey,
         authority: vaultAuth,
         gemBox,
         gemDepositReceipt: GDR,
@@ -516,7 +516,7 @@ export class GemBankClient extends AccountUtils {
       .accounts({
         bank,
         vault,
-        owner: isKp(vaultOwner) ? (<Keypair>vaultOwner).publicKey : vaultOwner,
+        owner: isKp(vaultOwner) ? (<Keypair>vaultOwner).publicKey as PublicKey : vaultOwner as PublicKey,
         authority: vaultAuth,
         gemBox,
         gemDepositReceipt: GDR,
@@ -553,8 +553,8 @@ export class GemBankClient extends AccountUtils {
     payer?: PublicKey
   ) {
     const managerPk = isKp(bankManager)
-      ? (<Keypair>bankManager).publicKey
-      : <PublicKey>bankManager;
+      ? (<Keypair>bankManager).publicKey as PublicKey
+      : <PublicKey>bankManager as PublicKey;
 
     const [whitelistProof, whitelistBump] = await findWhitelistProofPDA(
       bank,
@@ -595,8 +595,8 @@ export class GemBankClient extends AccountUtils {
     if (isKp(bankManager)) signers.push(<Keypair>bankManager);
 
     const bankManagerPk = isKp(bankManager)
-      ? (<Keypair>bankManager).publicKey
-      : <PublicKey>bankManager;
+      ? (<Keypair>bankManager).publicKey as PublicKey
+      : <PublicKey>bankManager as PublicKey;
 
     const txSig = await this.bankProgram.methods
       .removeFromWhitelist(whitelistBump)
@@ -632,7 +632,7 @@ export class GemBankClient extends AccountUtils {
       .accounts({
         bank,
         vault,
-        owner: isKp(vaultOwner) ? (<Keypair>vaultOwner).publicKey : vaultOwner,
+        owner: isKp(vaultOwner) ? (<Keypair>vaultOwner).publicKey as PublicKey : vaultOwner as PublicKey,
         authority: vaultAuth,
         recipientAta,
         vaultAta,
