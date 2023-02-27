@@ -131,6 +131,11 @@ export default defineComponent({
     };
 
     const findFarmsByManager = async (manager: PublicKey) => {
+      // const manager2 = new PublicKey("EwehHAMJjMhh9N8J1FLYoUntiBRJZ7z31LitU6YauBxe")
+
+      // console.log('manager is', manager.toString())
+      // console.log('manager2 is', manager2.toString())
+
       foundFarms.value = await gf.fetchAllFarmPDAs(manager);
       console.log('Found farms:', stringifyPKsAndBNs(foundFarms.value));
 

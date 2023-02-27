@@ -1,13 +1,9 @@
-use std::str::FromStr;
-
-use anchor_lang::prelude::*;
-use anchor_lang::Discriminator;
+use anchor_lang::{prelude::*, Discriminator};
 use anchor_spl::token::{self, Mint, Token, TokenAccount, Transfer};
 use arrayref::array_ref;
 use gem_common::{errors::ErrorCode, *};
-use metaplex_token_metadata::state::Metadata;
 
-use crate::state::*;
+use crate::{assert_decode_metadata, state::*};
 
 #[derive(Accounts)]
 #[instruction(bump_auth: u8, bump_rarity: u8)]
@@ -85,28 +81,6 @@ impl<'info> DepositGem<'info> {
     }
 }
 
-fn assert_valid_metadata(
-    gem_metadata: &AccountInfo,
-    gem_mint: &Pubkey,
-) -> core::result::Result<Metadata, ProgramError> {
-    let metadata_program = Pubkey::from_str("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s").unwrap();
-
-    // 1 verify the owner of the account is metaplex's metadata program
-    assert_eq!(gem_metadata.owner, &metadata_program);
-
-    // 2 verify the PDA seeds match
-    let seed = &[
-        b"metadata".as_ref(),
-        metadata_program.as_ref(),
-        gem_mint.as_ref(),
-    ];
-
-    let (metadata_addr, _bump) = Pubkey::find_program_address(seed, &metadata_program);
-    assert_eq!(metadata_addr, gem_metadata.key());
-
-    Metadata::from_account_info(gem_metadata)
-}
-
 fn assert_valid_whitelist_proof<'info>(
     whitelist_proof: &AccountInfo<'info>,
     bank: &Pubkey,
@@ -135,7 +109,7 @@ fn assert_valid_whitelist_proof<'info>(
     proof.contains_type(expected_whitelist_type)
 }
 
-fn assert_whitelisted(ctx: &Context<DepositGem>) -> Result<()> {
+fn assert_whitelisted<'info>(ctx: &Context<'_, '_, '_, 'info, DepositGem<'info>>) -> Result<()> {
     let bank = &*ctx.accounts.bank;
     let mint = &*ctx.accounts.gem_mint;
     let remaining_accs = &mut ctx.remaining_accounts.iter();
@@ -165,7 +139,7 @@ fn assert_whitelisted(ctx: &Context<DepositGem>) -> Result<()> {
         let creator_whitelist_proof_info = next_account_info(remaining_accs)?;
 
         // verify metadata is legit
-        let metadata = assert_valid_metadata(metadata_info, &mint.key())?;
+        let metadata = assert_decode_metadata(&mint, &metadata_info)?;
 
         // metaplex constraints this to max 5, so won't go crazy on compute
         // (empirical testing showed there's practically 0 diff between stopping at 0th and 5th creator)
@@ -207,7 +181,10 @@ pub fn calc_rarity_points(gem_rarity: &AccountInfo, amount: u64) -> Result<u64> 
     }
 }
 
-pub fn handler(ctx: Context<DepositGem>, amount: u64) -> Result<()> {
+pub fn handler<'info>(
+    ctx: Context<'_, '_, '_, 'info, DepositGem<'info>>,
+    amount: u64,
+) -> Result<()> {
     // fix missing discriminator check
     {
         let acct = ctx.accounts.gem_deposit_receipt.to_account_info();
