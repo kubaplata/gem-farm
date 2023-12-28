@@ -65,7 +65,9 @@ export class GemBankClient extends AccountUtils {
     this.provider = new AnchorProvider(
       this.conn,
       this.wallet,
-      AnchorProvider.defaultOptions()
+        {
+          skipPreflight: true
+        }
     );
     anchor.setProvider(this.provider);
   }
@@ -576,7 +578,7 @@ export class GemBankClient extends AccountUtils {
       .accounts({
         bank,
         vault,
-        owner: isKp(vaultOwner) ? (<Keypair>vaultOwner).publicKey : vaultOwner,
+        owner: (isKp(vaultOwner) ? (<Keypair>vaultOwner).publicKey : vaultOwner) as PublicKey,
         authority: vaultAuth,
         gemBox,
         gemDepositReceipt: GDR,
@@ -831,7 +833,7 @@ export class GemBankClient extends AccountUtils {
       .accounts({
         bank,
         vault,
-        owner: isKp(vaultOwner) ? (<Keypair>vaultOwner).publicKey : vaultOwner,
+        owner: (isKp(vaultOwner) ? (<Keypair>vaultOwner).publicKey : vaultOwner) as PublicKey,
         authority: vaultAuth,
         gemBox,
         gemDepositReceipt: GDR,
